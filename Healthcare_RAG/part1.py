@@ -1,9 +1,3 @@
-import numpy as np
-from sentence_transformers import SentenceTransformer
-import faiss
-import PyPDF2
-import time
-
 # -----------------------------------------
 # Custom Retrieval_Augmented Generation (RAG) Class
 # 1. Loading and chunking PDF documents
@@ -11,6 +5,14 @@ import time
 # 3. Storing embeddings in a FAISS vector index
 # 4. Retrieving relevant text based on a user query
 # ------------------------------------------
+
+
+import numpy as np
+from sentence_transformers import SentenceTransformer
+import faiss
+import PyPDF2
+import time
+
 class HealthcareRAG:
     # model from Hugging Face
     def __init__(self, embedding_model='all-MiniLM-L6-v2'):
