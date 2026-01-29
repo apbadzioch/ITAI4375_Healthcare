@@ -1,5 +1,5 @@
 # Course Objective and Plan
-from class module
+from syllabus Houston City College Spring 2026
 
 ## Artificial Intelligence in Healthcare
 There is no richer area for A.I. applications that in healthcare. Generative AI
