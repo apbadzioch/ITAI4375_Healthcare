@@ -2,6 +2,9 @@
 Streamlit web app for predicting aqueous solubility using
 a trained Random Forest model.
 
+- Aqueous Solubility is the maximum amount of solute (solid, liquid, or gas) that dissolves in a given
+  volume of water at a specific temperature and pressure.
+
 1. Loads the pre-trained model
 2. Accepts user inputs (MolWt and LogP)
 3. generates a solubility prediction
@@ -73,3 +76,7 @@ elif prediction > -2:
 else:
     st.warning("Low predicted solubility")
 
+
+"""
+
+"""
