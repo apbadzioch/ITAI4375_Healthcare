@@ -1,13 +1,9 @@
 """
-fda_app.py  —  Gradio UI for the openFDA drug-label RAG system
-Mirrors the structure of app.py (SEC/10-K chatbot) exactly,
-swapping companies → drugs and Sankey → Side-Effects bar chart.
-
 Tabs:
   1. Chat               — ask anything about indexed drug labels
   2. Indexed Drugs      — see what's in the index, refresh
   3. Add Drug           — enter a name, auto-download & index
-  4. Charts             — side-effects frequency chart per drug
+  4. Charts             — side effects frequency chart per drug
 """
 
 import gradio as gr
@@ -19,7 +15,7 @@ from fda_part1 import (
 from fda_ingest import ingest_drug
 
 # ---------------------------------------------------------------------------
-# STYLING  (matches app.py)
+# STYLING
 css = """
 footer {display: none !important}
 .custom-footer {
