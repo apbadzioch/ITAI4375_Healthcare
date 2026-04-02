@@ -1,0 +1,21 @@
+# IDE
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+*.egg-info/
+
+# Project-specific
+data/          # PDFs — too large for git
+faiss_index/   # Rebuilt locally from PDFs
+metadata/      # Auto-generated JSON
+indexed_companies.json
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Env
+.env
