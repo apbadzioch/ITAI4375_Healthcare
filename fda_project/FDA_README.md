@@ -25,7 +25,6 @@ pip install gradio langchain langchain-community langchain-huggingface \
             requests plotly pypdf
 ```
 
-> Same stack as the SEC chatbot. You already have most of this.
 
 ### 2. Pre-download some drug labels (optional but faster)
 
