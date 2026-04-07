@@ -1,17 +1,16 @@
 # FDA Drug Label RAG System
 
-An AI-powered drug label analysis engine built on the same architecture as
-the SEC/10-K chatbot — swapping financial filings for FDA-approved drug labels.
+An AI-powered drug label analysis engine built for FDA-approved drug labels.
 
 ---
 
 ## Files
 
-| File | Purpose | Mirrors |
-|------|---------|---------|
-| `fda_part1.py` | RAG core — embeddings, FAISS, LLM, prompts, ask() | `part1.py` |
-| `fda_ingest.py` | Download label PDFs from openFDA + DailyMed | *(new)* |
-| `fda_app.py` | Gradio UI — Chat, Indexed Drugs, Add Drug, Charts | `app.py` |
+| File | Purpose |
+|------|---------|
+| `fda_part1.py` | RAG core — embeddings, FAISS, LLM, prompts, ask() |
+| `fda_ingest.py` | Download label PDFs from openFDA + DailyMed |
+| `fda_app.py` | Gradio UI — Chat, Indexed Drugs, Add Drug, Charts |
 
 ---
 
@@ -66,7 +65,7 @@ RetrievalQA chain      ← gemma3:27b-cloud + drug_prompt
 answer + sources       ← section name + page number citations
 ```
 
-### Section-aware routing (mirrors 10-K Item routing)
+### Section-aware routing
 
 | Query keywords | Routed to |
 |---------------|-----------|

@@ -54,6 +54,7 @@ def handle_add_drug(drug_name: str):
     updated = "Indexed drugs: " + ", ".join(sorted(indexed_drugs))
     return f"{status}\n{updated}"
 
+
 # ---------------------------------------------------------------------------
 # SIDE-EFFECTS CHART FUNCTION
 def generate_side_effects_chart(drug_name: str):
