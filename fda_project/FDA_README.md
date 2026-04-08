@@ -2,6 +2,17 @@
 
 An AI-powered drug label analysis engine built for FDA-approved drug labels.
 
+**Phase 1:**
+- RAG over FDA drug labels
+- Ask questions, get cited answers from the label
+- Passive - user pulls info
+
+**Phase 2:**
+- User sets up their medication profile (drug, dose, frequency)
+- Conversational agent that answers "what do I do if I missed a dose?" or "Can I take this with food?"
+grounded in the actual label via RAG"
+- Proactive - system knows context about the user's specific situation before they ask
+
 ---
 
 ## Files
@@ -101,3 +112,14 @@ Both are free, public APIs. No key required.
 
 - **Not medical advice.** The footer says it. The system cites label sections
   so users can verify against the source document.
+
+---
+## Possible Additions
+
+**Data/Analytics**
+- Drug Shortage Tracker: FDA publishes drug shortage data on another API, there could
+ be an additional dashboard that tracks trends and flags critical shortages.
+
+**Agentic**
+- help patients understand their medication schedule, what to do if they miss a dose, what
+side effects to watch for.
