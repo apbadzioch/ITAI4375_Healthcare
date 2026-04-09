@@ -1,7 +1,6 @@
 """
 fda_part1.py  —  RAG core for openFDA drug-label PDFs
-Mirrors the architecture of part1.py (SEC/10-K) but adapted for
-pharmaceutical / drug-safety domain.
+
 """
 
 from langchain_community.document_loaders import PyPDFLoader
@@ -38,7 +37,7 @@ embeddings = HuggingFaceEmbeddings(
 # ---------------------------------------------------------------------------
 # LLM  (same cloud Gemma3 you're already using)
 llm = OllamaLLM(
-    model="gemma3:27b-cloud",
+    model="gemma4:31b-cloud",
     temperature=0.1,           # lower temp → more precise for clinical info
 )
 
@@ -64,7 +63,7 @@ Answer:
 """,
 )
 
-# Used for the side-effects bar chart extraction
+# Used for the side effects bar chart extraction
 side_effects_template = PromptTemplate(
     input_variables=["context", "question"],
     template="""
@@ -75,7 +74,7 @@ Respond ONLY with a JSON object. No explanation, no markdown fences.
 )
 
 # ---------------------------------------------------------------------------
-# SECTION MAP  — mirrors SECTION_MAP in part1.py for FDA label structure
+# SECTION MAP: for FDA label structure
 # Standard FDA drug label sections (21 CFR 201.56 / 201.57)
 SECTION_MAP = [
     (r"boxed\s*warning|black\s*box",         "BOXED_WARNING",      "Boxed Warning"),
@@ -275,32 +274,39 @@ else:
     print("No PDFs found in fda_pdfs/. Add drugs via the UI or fda_ingest.py.")
 
 # ---------------------------------------------------------------------------
-# SMART FILTER BUILDER  — mirrors build_filter() in part1.py
+# SMART FILTER BUILDER
+def classify_intent(query: str) -> tuple[str | None, str | None]:
+    """Ask the LLM to identify section and drug from the query."""
+    prompt = f"""You are routing a drug label query to the correct FDA label section.
+
+Query: "{query}"
+
+Respond ONLY with JSON, no explanation:
+{{"section": "SECTION_ID_OR_NULL", "drug": "DRUG_NAME_OR_NULL"}}
+
+Valid section IDs: ADVERSE_REACTIONS, WARNINGS, CONTRAINDICATIONS,
+DOSAGE, DRUG_INTERACTIONS, INDICATIONS, PHARMACOLOGY, OVERDOSAGE,
+SPECIFIC_POPS, BOXED_WARNING, CLINICAL_STUDIES, DESCRIPTION
+
+If unsure about section, use null. If no drug is named, use null."""
+    try:
+        raw = llm.invoke(prompt)
+        clean = re.sub(r"```(?:json)?|```", "", raw).strip()
+        data = json.loads(clean)
+        return data.get("section"), data.get("drug")
+    except Exception:
+        return None, None
+    
 def build_filter(query: str, drug: str | None) -> dict:
-    q = query.lower()
+    """Build FAISS metadata filter using LLM-classified intent."""
+    section, llm_drug = classify_intent(query)
+
+    # prefer explicitly passed drug, fall back to LLM-detected
+    resolved_drug = drug or llm_drug
     base = {"drug": drug} if drug else {}
 
-    if any(w in q for w in ["side effect", "adverse", "reaction", "toxicity", "toxic"]):
-        return {**base, "section": "ADVERSE_REACTIONS", "is_short_chunk": False}
-    if any(w in q for w in ["warning", "precaution", "black box", "boxed"]):
-        return {**base, "section": "WARNINGS", "is_short_chunk": False}
-    if any(w in q for w in ["contraindic", "should not", "avoid", "not recommended"]):
-        return {**base, "section": "CONTRAINDICATIONS", "is_short_chunk": False}
-    if any(w in q for w in ["dose", "dosage", "how much", "how to take", "administration"]):
-        return {**base, "section": "DOSAGE", "is_short_chunk": False}
-    if any(w in q for w in ["interact", "combination", "taken with"]):
-        return {**base, "section": "DRUG_INTERACTIONS", "is_short_chunk": False}
-    if any(w in q for w in ["pregnant", "pregnancy", "fetal", "breastfeed"]):
-        return {**base, "mentions_pregnancy": True, "is_short_chunk": False}
-    if any(w in q for w in ["child", "pediatric", "kid"]):
-        return {**base, "mentions_pediatric": True, "is_short_chunk": False}
-    if any(w in q for w in ["overdose", "overdosage", "too much"]):
-        return {**base, "section": "OVERDOSAGE", "is_short_chunk": False}
-    if any(w in q for w in ["what is", "used for", "indication", "treat"]):
-        return {**base, "section": "INDICATIONS", "is_short_chunk": False}
-    if any(w in q for w in ["mechanism", "how does", "pharmacology", "works"]):
-        return {**base, "section": "PHARMACOLOGY", "is_short_chunk": False}
-
+    if section:
+        return {**base, "section": section, "is_short_chunk": False}
     return {**base, "is_short_chunk": False} if base else {}
 
 # ---------------------------------------------------------------------------
