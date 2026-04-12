@@ -108,7 +108,7 @@ Both are free, public APIs. No key required.
   If a drug returns poor answers, check the PDF manually in `fda_pdfs/`.
 
 - **LLM is the same Gemma3:27b-cloud** you're already running. Temperature
-  is set to 0.1 (vs 0.2 for finance) for more conservative clinical answers.
+  is set to 0.1 for more conservative clinical answers.
 
 - **Not medical advice.** The footer says it. The system cites label sections
   so users can verify against the source document.
