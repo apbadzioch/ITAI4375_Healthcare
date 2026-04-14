@@ -30,8 +30,12 @@ chat = gr.Chatbot(show_label=False)
 
 # ---------------------------------------------------------------------------
 # CHAT FUNCTION
+
+from fda_router import AgentChat
+agent = AgentChat()
+
 def respond(message, history):
-    return ask(message)
+    return agent.chet(message)
 
 # ---------------------------------------------------------------------------
 # ADD DRUG FUNCTION
