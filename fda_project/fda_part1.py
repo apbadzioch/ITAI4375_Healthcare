@@ -64,7 +64,7 @@ Answer:
 """,
 )
 
-# Used for the side-effects bar chart extraction
+# Used for the side effects bar chart extraction
 side_effects_template = PromptTemplate(
     input_variables=["context", "question"],
     template="""
@@ -75,7 +75,7 @@ Respond ONLY with a JSON object. No explanation, no markdown fences.
 )
 
 # ---------------------------------------------------------------------------
-# SECTION MAP  — mirrors SECTION_MAP in part1.py for FDA label structure
+# SECTION MAP  — for FDA label structure
 # Standard FDA drug label sections (21 CFR 201.56 / 201.57)
 SECTION_MAP = [
     (r"boxed\s*warning|black\s*box",         "BOXED_WARNING",      "Boxed Warning"),
@@ -213,7 +213,7 @@ def save_drug_metadata_json(splits: list, drug_name: str) -> None:
     print(f"  Metadata saved → {path}")
 
 # ---------------------------------------------------------------------------
-# REGISTRY  (tracks which drugs are indexed — mirrors indexed_companies)
+# REGISTRY  (tracks which drugs are indexed)
 def load_indexed_drugs() -> set:
     if os.path.exists(REGISTRY):
         with open(REGISTRY) as f:
@@ -275,7 +275,7 @@ else:
     print("No PDFs found in fda_pdfs/. Add drugs via the UI or fda_ingest.py.")
 
 # ---------------------------------------------------------------------------
-# SMART FILTER BUILDER  — mirrors build_filter() in part1.py
+# SMART FILTER BUILDER
 def build_filter(query: str, drug: str | None) -> dict:
     q = query.lower()
     base = {"drug": drug} if drug else {}
@@ -304,7 +304,7 @@ def build_filter(query: str, drug: str | None) -> dict:
     return {**base, "is_short_chunk": False} if base else {}
 
 # ---------------------------------------------------------------------------
-# DRUG DETECTION FROM QUERY  — mirrors detect_company()
+# DRUG DETECTION FROM QUERY
 def detect_drug(query: str) -> str | None:
     q = query.lower()
     for drug in indexed_drugs:
@@ -354,7 +354,7 @@ def ask(query: str) -> str:
     return answer
 
 # ---------------------------------------------------------------------------
-# SIDE-EFFECTS EXTRACTION  — used by Charts tab (mirrors extract_sankey_structure)
+# SIDE EFFECTS EXTRACTION  — used by Charts tab
 SIDE_EFFECTS_QUERY = """
 You are analyzing the FDA drug label for {drug}.
 
