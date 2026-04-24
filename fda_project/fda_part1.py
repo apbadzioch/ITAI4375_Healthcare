@@ -38,7 +38,7 @@ embeddings = HuggingFaceEmbeddings(
 # ---------------------------------------------------------------------------
 # LLM  (same cloud Gemma3 you're already using)
 llm = OllamaLLM(
-    model="gemma3:27b-cloud",
+    model="gemma4:31b-cloud",
     temperature=0.1,           # lower temp → more precise for clinical info
 )
 

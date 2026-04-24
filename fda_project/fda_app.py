@@ -35,7 +35,7 @@ from fda_router import AgentChat
 agent = AgentChat()
 
 def respond(message, history):
-    return agent.chet(message)
+    return agent.chat(message)
 
 # ---------------------------------------------------------------------------
 # ADD DRUG FUNCTION
