@@ -31,7 +31,7 @@ chat = gr.Chatbot(show_label=False)
 # ---------------------------------------------------------------------------
 # CHAT FUNCTION
 
-from fda_router import AgentChat
+from fda_tools import AgentChat
 agent = AgentChat()
 
 def respond(message, history):
