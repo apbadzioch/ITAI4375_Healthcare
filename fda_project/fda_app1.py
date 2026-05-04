@@ -100,7 +100,6 @@ with gr.Blocks(title="FDA Drug Label Assistant") as demo:
             "Does Aspirin interact with blood thinners?",
             "Is Metformin safe during pregnancy?",
             "What are the boxed warnings for Warfarin?",
-            "Add Ibuprofen to the index",
             "Show me the label sections for Aspirin",
         ],
         inputs=msg_box,
